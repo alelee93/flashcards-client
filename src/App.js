@@ -2,6 +2,8 @@ import React from 'react'
 import {BrowserRouter as Router, Switch, Route, NavLink, useHistory}  from 'react-router-dom'
 import FlashcardSetsIndexContainer from './containers/FlashcardSetsIndexContainer'
 import FlashcardSetFormContainer from './containers/FlashcardSetFormContainer'
+import NewFlashcardContainer from './containers/NewFlashcardContainer'
+import FlashcardShowContainer from './containers/FlashcardShowContainer'
 
 function App() {
   
@@ -34,6 +36,8 @@ function App() {
        <Switch>
          <Route exact path="/"> <FlashcardSetsIndexContainer /> </Route>
          <Route path="/flashcardsets/new" component={FlashcardSetFormContainer}/>
+         <Route path="/flashcardsets/:flashcardsetId/flashcards/new" component={NewFlashcardContainer}/>
+         <Route path="/flashcardsets/:flashcardsetId" component={FlashcardShowContainer}/>
        </Switch>
      </Router>
     </div>
