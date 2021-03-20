@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import FlashcardSetsList from '../components/FlashcardSetsList'
+import FlashcardSetsList from './FlashcardSetsList'
 
 export default class FlashcardSetsIndexcontainer extends Component {
 

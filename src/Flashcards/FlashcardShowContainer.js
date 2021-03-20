@@ -9,8 +9,9 @@ export default class FlashcardShowContainer extends Component {
     }
 
     componentDidMount(){
-        const FlashcardSetId = this.props.match.params.flashcardsetId
-        fetch( `http://localhost:3001/flashcard_sets/${FlashcardSetId}`)
+        // const FlashcardSetId = this.props.match.params.flashcardsetId
+        const selectedFlashcardSetId = this.props.selectedFlashcardSetId
+        fetch( `http://localhost:3001/flashcard_sets/${selectedFlashcardSetId}`)
             .then(res => res.json())
             .then(({ flashcard_set, flashcards}) => {
                 this.setState({
