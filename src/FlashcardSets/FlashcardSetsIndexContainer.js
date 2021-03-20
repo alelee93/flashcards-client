@@ -1,7 +1,17 @@
 import React, {Component} from 'react'
 import FlashcardSetsList from './FlashcardSetsList'
 
-export default class FlashcardSetsIndexcontainer extends Component {
+import { withStyles } from '@material-ui/core/styles';
+import stylesSideBar from './stylesSideBar';
+import List from '@material-ui/core/List';
+
+
+
+
+
+class FlashcardSetsIndexcontainer extends Component {
+
+   
 
     state = {
         flashcardSets: [],
@@ -25,24 +35,26 @@ export default class FlashcardSetsIndexcontainer extends Component {
                     loading: false
                 })
             })
-
-        // setTimeout(() => {
-        //     this.setState({
-        //         flashcardSets: [
-        //             {title: 'Ruby', id: 1}, 
-        //             {title: 'React', id: 2},
-        //         ],
-        //         loading: false
-        //     })
-        // },1000)
     }
 
     render(){
         //debugger
+        const {classes} = this.props
+        
         return(
-            <section className="max-w-6xl w-11/12 mx-auto mt-16">
-                {this.state.loading ? 'loading spinner' : <FlashcardSetsList flashcardSets={this.state.flashcardSets} /> }
+            
+            <section className={classes.root}>
+                {this.state.loading ? 'loading spinner' : 
+                <List>
+                <FlashcardSetsList flashcardSets={this.state.flashcardSets} /> 
+                </List>
+                }
             </section>
         )
     }
+      
 }
+
+export default withStyles(stylesSideBar)(FlashcardSetsIndexcontainer)
+
+
