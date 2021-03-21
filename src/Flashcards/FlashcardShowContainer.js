@@ -10,7 +10,24 @@ export default class FlashcardShowContainer extends Component {
 
     componentDidMount(){
         // const FlashcardSetId = this.props.match.params.flashcardsetId
-        const selectedFlashcardSetId = this.props.selectedFlashcardSetId
+        //debugger
+        const selectedFlashcardSetId = this.props.selectedflashcardSet.id
+        fetch( `http://localhost:3001/flashcard_sets/${selectedFlashcardSetId}`)
+            .then(res => res.json())
+            .then(({ flashcard_set, flashcards}) => {
+                //debugger
+                this.setState({
+                    flashcard_set: flashcard_set,
+                    flashcards: flashcards,
+                    loading: false
+                })
+            })
+    }
+
+    componentDidUpdate = () =>  {
+      //debugger
+      if (this.props.selectedflashcardSet.id !== this.state.flashcard_set.id) {
+        const selectedFlashcardSetId = this.props.selectedflashcardSet.id
         fetch( `http://localhost:3001/flashcard_sets/${selectedFlashcardSetId}`)
             .then(res => res.json())
             .then(({ flashcard_set, flashcards}) => {
@@ -20,14 +37,18 @@ export default class FlashcardShowContainer extends Component {
                     loading: false
                 })
             })
-
+      } 
     }
 
     render(){
-        if(this.state.loading){
-           return <div>Loading Spinner</div> 
-        }
+        // if(this.state.loading){
+        //    return <div>Loading Spinner</div> 
+        // }
 
+//debugger
+console.log("rendering flashcards for set", this.state.flashcard_set)
+//debugger
+    if (this.state.flashcard_set) {
         return(
             <section className="max-w-6xl w-11/12 mx-auto mt-16">
             <h1 className="text-3xl font-bold text-center">
@@ -42,9 +63,10 @@ export default class FlashcardShowContainer extends Component {
                   {/* Later we'll add a spoiler here to show the description */}
                 </figure>
               ))}
-            </div>
-            </section>
+            </div> 
+            </section>   
         )
+              } else return(<div></div>)
        
     }
 }

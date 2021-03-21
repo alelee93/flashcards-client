@@ -10,11 +10,15 @@ class FlashcardSetListItem extends React.Component {
 //   flashcardSetListItem = ({flashcardSet}) => {
 //     //debugger
 //     return <li className='' key={flashcardSet.id}> {flashcardSet.title} </li>
-    
 // }
 
 deleteFlashcardSet = (id) => {
     console.log("delete", id)
+}
+
+selectFlashcard = (flashcard) => {
+    console.log("update state to ", flashcard.id)
+    this.props.selectFlashcard(flashcard)
 }
 
 render(){
@@ -24,12 +28,12 @@ render(){
         <div>
             <ListItem
                 className={classes.listItem}
-                selected = ''
+                selected = {this.props.selectedflashcardSet ? this.props.flashcardSet.id === this.props.selectedflashcardSet.id : ""}
                 alignItems='flex-start'>
                 
                 <div
                 className={classes.textSection}
-                onClick={() => this.selectFlashcard}>
+                onClick={() => this.selectFlashcard(this.props.flashcardSet)}>
                     <ListItemText
                         primary={this.props.flashcardSet.title}
                         secondary={this.props.flashcardSet.title}

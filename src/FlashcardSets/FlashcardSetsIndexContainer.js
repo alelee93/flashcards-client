@@ -46,7 +46,11 @@ class FlashcardSetsIndexcontainer extends Component {
             <section className={classes.root}>
                 {this.state.loading ? 'loading spinner' : 
                 <List>
-                <FlashcardSetsList flashcardSets={this.state.flashcardSets} /> 
+                <FlashcardSetsList 
+                    flashcardSets={this.state.flashcardSets} 
+                    selectFlashcard = {this.props.selectFlashcard}
+                    selectedflashcardSet = {this.props.selectedflashcardSet}
+                    /> 
                 </List>
                 }
             </section>

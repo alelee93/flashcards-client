@@ -3,31 +3,41 @@ import React from 'react'
 import FlashcardSetListItem from './FlashcardSetListItem'
 
 
-const FlashcardSetsList = ({flashcardSets}) => {
+class FlashcardSetsList extends React.Component {
 
-    //debugger
-    return(
-    flashcardSets.map(set => {
+
+    // flashcardSetsList = ({flashcardSets}) => {
+
+    //     debugger
+    //     return(
+    //     flashcardSets.map(set => {
+    //         return(
+    //             <div>
+    //                 <FlashcardSetListItem flashcardSet={set} selectFlashcard = {this.props.selectFlashcard}/>
+    //                 <Divider></Divider>
+    //             </div>
+    //         )
+    //     })
+    //     ) 
+    // }
+
+
+    render(){
+        //debugger
         return(
-            <div>
-                <FlashcardSetListItem flashcardSet={set}/>
-                <Divider></Divider>
-            </div>
+            this.props.flashcardSets.map(set => {
+                return(
+                    <div>
+                        <FlashcardSetListItem flashcardSet={set} selectFlashcard = {this.props.selectFlashcard} selectedflashcardSet = {this.props.selectedflashcardSet}/>
+                        <Divider></Divider>
+                    </div>
+                )
+            })
         )
-    })
-    )
-
-    // return (
-    //      <>
-    //         <h1>FlashcardSetsList</h1>
-    //         <ul>
-    //             {flashcardSets.map(set => <FlashcardSetListItem flashcardSet={set}/>)}
-    //         </ul>
-    //     </>
-
-       
-        
-    // )
+    }
 }
+
+
+
 
 export default FlashcardSetsList

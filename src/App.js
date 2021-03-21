@@ -4,6 +4,7 @@ import FlashcardSetsIndexContainer from './FlashcardSets/FlashcardSetsIndexConta
 import FlashcardSetFormContainer from './FlashcardSets/FlashcardSetFormContainer'
 import NewFlashcardContainer from './Flashcards/NewFlashcardContainer'
 import FlashcardShowContainer from './Flashcards/FlashcardShowContainer'
+import TopBarContainer from './TopBar/TopBarContainer'
 
 class App extends React.Component {
 
@@ -19,32 +20,17 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-      
 
       <Router>
+        <TopBarContainer />
+        <FlashcardSetsIndexContainer 
+            selectFlashcard = {this.selectFlashcardSet} 
+            selectedflashcardSet={this.state.selectedFlashcardSet}
+            />
 
-        <FlashcardSetsIndexContainer />
-        <FlashcardShowContainer selectedFlashcardSetId={this.state.selectedFlashcardSetId}/>
-
-        {/* <div className="text-center bg-blue-900 text-yellow-100 p-4">
-          <NavLink 
-            className="inline-block py-2 px-2" 
-            activeClassName="text-yellow-300"
-            exact
-            to="/"
-            >
-              Flashcard Sets
-          </NavLink> */}
-
-          {/* <NavLink 
-            className="inline-block py-2 px-2" 
-            activeClassName="text-yellow-300"
-            exact
-            to="/flashcardsets/new"
-            >
-            New Flashcard Set
-          </NavLink> */}
-        {/* </div> */}
+        {this.state.selectedFlashcardSet ? 
+        <FlashcardShowContainer selectedflashcardSet={this.state.selectedFlashcardSet}/> : null
+        }
 
         <Switch>
           {/* <Route exact path="/"> <FlashcardSetsIndexContainer /> </Route> */}
@@ -56,6 +42,34 @@ class App extends React.Component {
       </div>
     );
   }
+
+  selectFlashcardSet = (flashcardSet) => {
+    console.log("currently updating state in App to", flashcardSet.id)
+    this.setState({
+      selectedFlashcardSetId: flashcardSet.id,
+      selectedFlashcardSet: flashcardSet
+    })
+  }
+
+  componentDidMount(){
+    fetch(`http://localhost:3001/${this.state.selectedFlashcardSetId}/flashcards`, {
+        method: 'get',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(FlashcardsJson => {
+            this.setState({
+                flashcards: FlashcardsJson 
+            })
+        })
 }
+
+
+}
+
+
 
 export default App;
