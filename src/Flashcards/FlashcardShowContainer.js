@@ -1,72 +1,117 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { fetchFlashcards, addingFlashcard } from "../actions/flashcards";
+import { selectFlashcardSetbyId } from "../actions/flashcardSets";
+import { compose } from "redux";
 
-export default class FlashcardShowContainer extends Component {
+import { withStyles } from "@material-ui/core/styles";
+import styles from "./styles";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import AddIcon from "@material-ui/icons/Add";
 
-    state = {
-        flashcard_set: {},
-        flashcards: [],
-        loading: true,
+import Test from "../Test";
+import Flashcard from "./Flashcard";
+
+class FlashcardShowContainer extends Component {
+  componentDidMount() {
+    const flashcardSetId = this.props.match.params.flashcardsetId;
+    this.props.dispatchSelectFlashcardSetbyId(flashcardSetId);
+    this.props.dispatchFetchFlashcards(flashcardSetId);
+  }
+
+  componentDidUpdate = (prevProps) => {
+    //debugger;
+    if (this.props.selectedFlashcardSet !== prevProps.selectedFlashcardSet) {
+      this.props.dispatchFetchFlashcards(
+        this.props.match.params.flashcardsetId
+      );
     }
+  };
 
-    componentDidMount(){
-        // const FlashcardSetId = this.props.match.params.flashcardsetId
-        //debugger
-        const selectedFlashcardSetId = this.props.selectedflashcardSet.id
-        fetch( `http://localhost:3001/flashcard_sets/${selectedFlashcardSetId}`)
-            .then(res => res.json())
-            .then(({ flashcard_set, flashcards}) => {
-                //debugger
-                this.setState({
-                    flashcard_set: flashcard_set,
-                    flashcards: flashcards,
-                    loading: false
-                })
-            })
-    }
+  handleOnClick = () => {
+    this.props.dispatchAddingFlashcard(true);
+  };
 
-    componentDidUpdate = () =>  {
-      //debugger
-      if (this.props.selectedflashcardSet.id !== this.state.flashcard_set.id) {
-        const selectedFlashcardSetId = this.props.selectedflashcardSet.id
-        fetch( `http://localhost:3001/flashcard_sets/${selectedFlashcardSetId}`)
-            .then(res => res.json())
-            .then(({ flashcard_set, flashcards}) => {
-                this.setState({
-                    flashcard_set,
-                    flashcards,
-                    loading: false
-                })
-            })
-      } 
-    }
+  render() {
+    console.log("Addflashcard State is: ", this.props.addingFlashcard);
+    const { classes } = this.props;
+    if (this.props.flashcards && this.props.selectedFlashcardSet) {
+      return (
+        <section className={classes.editorContainer}>
+          {/* <h1 className='text-3xl font-bold text-center'>
+            {this.props.selectedFlashcardSet.title}
+          </h1> */}
 
-    render(){
-        // if(this.state.loading){
-        //    return <div>Loading Spinner</div> 
-        // }
+          <TextField
+            id='standard-basic'
+            label='title'
+            // disbled={true}
+            value={this.props.selectedFlashcardSet.title}
+          ></TextField>
 
-//debugger
-console.log("rendering flashcards for set", this.state.flashcard_set)
-//debugger
-    if (this.state.flashcard_set) {
-        return(
-            <section className="max-w-6xl w-11/12 mx-auto mt-16">
-            <h1 className="text-3xl font-bold text-center">
-              {this.state.flashcard_set.title}
-            </h1>
-            <div className="grid grid-cols-3">
-              {this.state.flashcards.map((flashcard) => (
-                <figure>
-                  <img className="" alt={flashcard.card_number} src={flashcard.poster_url} />
-                  <p>{flashcard.question}</p>
-                  <p>{flashcard.answer}</p>
-                  {/* Later we'll add a spoiler here to show the description */}
-                </figure>
-              ))}
-            </div> 
-            </section>   
-        )
-              } else return(<div></div>)
-       
-    }
+          <Button
+            variant='contained'
+            color='secondary'
+            startIcon={<AddIcon />}
+            onClick={this.handleOnClick}
+            disabled={this.props.addingFlashcard}
+            // href={`http://localhost:3000/flashcardsets/${this.props.selectedFlashcardSet.id}/flashcards/new`}
+          >
+            Add Flashcard
+          </Button>
+
+          {this.props.addingFlashcard ? <Test /> : ""}
+
+          <div>
+            {this.props.flashcards.map((flashcard) => {
+              //debugger;
+              return <Flashcard flashcard={flashcard} />;
+            })}
+          </div>
+
+          {/* <div className='grid grid-cols-3'>
+            {this.props.flashcards.map((flashcard) => (
+              <figure>
+                <img
+                  className=''
+                  alt={flashcard.card_number}
+                  src={flashcard.poster_url}
+                />
+                <p>{flashcard.question}</p>
+                <p>{flashcard.answer}</p>
+              </figure>
+            ))}
+          </div> */}
+        </section>
+      );
+    } else return <div></div>;
+  }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    flashcards: state.flashcards.inSelectedflashcardSet,
+    selectedFlashcardSet: state.flashcardSets.selectedFlashcardSet,
+    addingFlashcard: state.flashcards.addingFlashcard
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatchFetchFlashcards: (flashcardId) =>
+      dispatch(fetchFlashcards(flashcardId)),
+
+    dispatchSelectFlashcardSetbyId: (flashcardId) =>
+      dispatch(selectFlashcardSetbyId(flashcardId)),
+
+    dispatchAddingFlashcard: (state) => dispatch(addingFlashcard(state))
+  };
+};
+
+//export default withStyles(styles)(FlashcardShowContainer)
+
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps)
+)(FlashcardShowContainer);

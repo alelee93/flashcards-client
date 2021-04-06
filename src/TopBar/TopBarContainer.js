@@ -4,69 +4,108 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
-import { makeStyles } from "@material-ui/core/styles";
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddBoxIcon from '@material-ui/icons/AddBox';
+//import { makeStyles } from "@material-ui/core/styles";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 import SearchIcon from "@material-ui/icons/Search";
+import styles from "./styles";
+import { withStyles } from "@material-ui/core/styles";
 
-export default function TopBarContainer() {
-  const classes = useStyles();
-  return (
-    <div>
-      <AppBar position="static">
-        <Toolbar>
-          {/* <Typography variant="h6">FlashCards</Typography> */}
+import { compose } from "redux";
+import { connect } from "react-redux";
+import {
+  deleteFlashcardSet,
+  selectFlashcardSet,
+  // createFlashcardSet,
+  setStateForAddingFlashcardSet
+} from "../actions/flashcardSets";
 
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <DeleteIcon />
-          </IconButton>
+import DeleteBttn from "./deleteFlashcardSet";
+import AddFlashcardSetBttn from "./addFlashcardSet";
 
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <AddBoxIcon />
-          </IconButton>
+class TopBarContainer extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      addingSet: false,
+      title: null
+    };
+  }
 
+  handleAddClick = () => {
+    console.log("new flashcardset");
+    this.props.dispatchSetStateForAddingFlashcardSet(true);
+    //this.props.dispatchCreateFlashcardSet({ title: "New FlaschardSet" });
+    // this.setState({
+    //     addingSet: !this.state.addingSet,
+    //     title: null
+    // })
+  };
 
-
-          
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput
-              }}
-            />
-          </div>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+  render() {
+    const classes = this.props;
+    return (
+      <div>
+        <AppBar position='static'>
+          <Toolbar>
+            {/* <Typography variant="h6">FlashCards</Typography> */}
+            {/* <IconButton onClick = {this.deleteFlashcardSet("test")} edge="start" color="inherit" aria-label="menu">
+            <DeleteIcon /> 
+          </IconButton> */}
+            <DeleteBttn />
+            <AddFlashcardSetBttn />
+            {/* <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder='Search…'
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput
+                }}
+              />
+            </div> */}
+            <p>
+              selectedFlashcardSet:{" "}
+              {this.props.selectedFlashcardSet
+                ? this.props.selectedFlashcardSet.id
+                : "none"}
+            </p>
+            &nbsp;&nbsp;
+            <p>
+              newFlaschardSet:
+              {this.props.addingFlashcardSet ? "true" : "false"}
+            </p>
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
 }
 
-const useStyles = makeStyles(theme => ({
-    search: {
-      position: "relative",
-      borderRadius: theme.shape.borderRadius,
-      marginLeft: 0,
-      width: "100%"
+const mapStateToProps = (state) => {
+  return {
+    flashcardSets: state.flashcardSets.list,
+    selectedFlashcardSet: state.flashcardSets.selectedFlashcardSet,
+    addingFlashcardSet: state.flashcardSets.addingFlashcardSet
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    selectFlashcardSet: (flashcardSet) => {
+      dispatch(selectFlashcardSet(flashcardSet));
     },
-    searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: "100%",
-      position: "absolute",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
+    deleteFlashcardSet: (flashcardSetId) => {
+      dispatch(deleteFlashcardSet(flashcardSetId));
     },
-    inputRoot: {
-      color: "inherit"
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      width: "100%"
-    }
-  }));
+    dispatchSetStateForAddingFlashcardSet: (state) =>
+      dispatch(setStateForAddingFlashcardSet(state))
+  };
+};
+
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps)
+)(TopBarContainer);

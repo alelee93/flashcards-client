@@ -1,64 +1,62 @@
-import React, {Component} from 'react'
-import FlashcardSetsList from './FlashcardSetsList'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { fetchFlashcardSets } from "../actions/flashcardSets";
+import FlashcardSetsList from "./FlashcardSetsList";
 
-import { withStyles } from '@material-ui/core/styles';
-import stylesSideBar from './stylesSideBar';
-import List from '@material-ui/core/List';
-
-
-
-
+import { withStyles } from "@material-ui/core/styles";
+import stylesSideBar from "./stylesSideBar";
+import List from "@material-ui/core/List";
+import { compose } from "redux";
+import FlashcardSetListItemNew from "./FlashcardSetListItemNew";
 
 class FlashcardSetsIndexcontainer extends Component {
+  componentDidMount() {
+    this.props.dispatchFetchFlashcardSets();
+  }
 
-   
+  render() {
+    //debugger
+    const { classes } = this.props;
 
-    state = {
-        flashcardSets: [],
-        loading: true
+    if (this.props.loadingState === "notStarted") {
+      return null;
     }
 
-    componentDidMount(){
-
-        fetch('http://localhost:3001/flashcard_sets', {
-            method: 'get',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(res => res.json())
-            .then(FlashcardSetsJson => {
-                console.log("flashcardSets", FlashcardSetsJson)
-                this.setState({
-                    flashcardSets: FlashcardSetsJson,
-                    loading: false
-                })
-            })
-    }
-
-    render(){
-        //debugger
-        const {classes} = this.props
-        
-        return(
-            
-            <section className={classes.root}>
-                {this.state.loading ? 'loading spinner' : 
-                <List>
-                <FlashcardSetsList 
-                    flashcardSets={this.state.flashcardSets} 
-                    selectFlashcard = {this.props.selectFlashcard}
-                    selectedflashcardSet = {this.props.selectedflashcardSet}
-                    /> 
-                </List>
-                }
-            </section>
-        )
-    }
-      
+    return (
+      <section className={classes.sidebarContainer}>
+        {this.props.loadingState == "notStarted" ? (
+          "loading spinner"
+        ) : (
+          <List>
+            {this.props.addingFlashcardSet ? <FlashcardSetListItemNew /> : ""}
+            <FlashcardSetsList
+              flashcardSets={this.props.flashcardSets}
+              // selectFlashcard = {this.props.selectFlashcard}
+              // selectedflashcardSet = {this.props.selectedflashcardSet}
+            />
+          </List>
+        )}
+      </section>
+    );
+  }
 }
 
-export default withStyles(stylesSideBar)(FlashcardSetsIndexcontainer)
+const mapStateToProps = (state) => {
+  return {
+    flashcardSets: state.flashcardSets.list,
+    loadingState: state.flashcardSets.loadingState,
+    selectedFlashcardSet: state.flashcardSets.selectedFlashcardSet,
+    addingFlashcardSet: state.flashcardSets.addingFlashcardSet
+  };
+};
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatchFetchFlashcardSets: () => dispatch(fetchFlashcardSets())
+  };
+};
 
+export default compose(
+  withStyles(stylesSideBar),
+  connect(mapStateToProps, mapDispatchToProps)
+)(FlashcardSetsIndexcontainer);
