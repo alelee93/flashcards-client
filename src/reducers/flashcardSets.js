@@ -68,6 +68,7 @@ export default function FlashcardSetsReducer(state = initialState, action) {
         ...state,
         newFlashcardSetTitle: action.payload
       };
+
     default:
       return state;
   }

@@ -3,13 +3,15 @@ import {
   SUCCESSFULLY_LOADED_FLASHCARDS,
   ADDING_FLASHCARD,
   SUCCESSFULLY_CREATED_FLASHCARD,
-  DELETE_FLASHCARD
+  DELETE_FLASHCARD,
+  SUCCESSFULLY_UPDATED_FLASHCARD
+
   // FAILED_LOADING_FLASHCARDSETS,
   // ADD_FLASHCARDS,
 } from "../actions";
 
 const initialState = {
-  inSelectedflashcardSet: [],
+  inSelectedFlashcardSet: [],
   flashcardSetsLoaded: {},
   addingFlashcard: false
 };
@@ -31,10 +33,10 @@ export default function FlashcardsReducer(state = initialState, action) {
           ...state.flashcardSetsLoaded,
           [action.payload]: "successful"
         },
-        // inSelectedflashcardSet: state.inSelectedflashcardSet
+        // inSelectedFlashcardSet: state.inSelectedFlashcardSet
         // .filter((flashcard) => flashcard.flashcard_set_id == action.payload.flashcard_set.id)
         // .concat(action.payload.flashcards)
-        inSelectedflashcardSet: action.payload.flashcards,
+        inSelectedFlashcardSet: action.payload.flashcards,
         addingFlashcard: false
       };
 
@@ -48,7 +50,7 @@ export default function FlashcardsReducer(state = initialState, action) {
       debugger;
       return {
         ...state,
-        inSelectedflashcardSet: state.inSelectedflashcardSet.concat(
+        inSelectedFlashcardSet: state.inSelectedFlashcardSet.concat(
           action.payload
         ),
         addingFlashcard: false
@@ -57,10 +59,19 @@ export default function FlashcardsReducer(state = initialState, action) {
     case DELETE_FLASHCARD:
       return {
         ...state,
-        inSelectedflashcardSet: state.inSelectedflashcardSet.filter(
+        inSelectedFlashcardSet: state.inSelectedFlashcardSet.filter(
           (flashcard) => flashcard.id !== action.payload.id
         )
       };
+
+    case SUCCESSFULLY_UPDATED_FLASHCARD:
+      return {
+        ...state,
+        inSelectedFlashcardSet: state.inSelectedFlashcardSet
+          .filter((flashcard) => flashcard.id !== action.payload.id)
+          .concat(action.payload)
+      };
+
     default:
       return state;
   }

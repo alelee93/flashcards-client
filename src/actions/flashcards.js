@@ -3,7 +3,8 @@ import {
   SUCCESSFULLY_LOADED_FLASHCARDS,
   ADDING_FLASHCARD,
   SUCCESSFULLY_CREATED_FLASHCARD,
-  DELETE_FLASHCARD
+  DELETE_FLASHCARD,
+  SUCCESSFULLY_UPDATED_FLASHCARD
 } from ".";
 
 export const fetchFlashcards = (flashcardId) => {
@@ -83,5 +84,33 @@ export const deleteFlashcard = (flashcard) => {
         });
       })
       .catch((error) => alert(error));
+  };
+};
+
+export const updateFlashcard = (data) => {
+  //debugger;
+  return (dispatch) => {
+    return fetch(`http://localhost:3001/flashcards/${data.id}`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((errors) => Promise.reject(errors));
+        }
+      })
+      .then((flashcard) => {
+        // debugger;
+        dispatch({
+          type: SUCCESSFULLY_UPDATED_FLASHCARD,
+          payload: flashcard
+        });
+      });
   };
 };

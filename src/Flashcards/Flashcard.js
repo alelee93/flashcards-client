@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { Divider } from "@material-ui/core";
 import Edit from "@material-ui/icons/Edit";
 import ClearIcon from "@material-ui/icons/Clear";
-import { deleteFlashcard } from "../actions/flashcards";
+import { deleteFlashcard, updateFlashcard } from "../actions/flashcards";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,15 +32,50 @@ const useStyles = makeStyles((theme) => ({
 function Flashcard(props) {
   const { flashcard, dispatchDeleteFlashcard } = props;
   const classes = useStyles();
-  //   const [question, setQuestion] = React.useState(flashcard.question);
-  //   const [answer, setAnswer] = React.useState(flashcard.answer);
-  //     const [id] = React.useState(flashcard.id);
+
+  const [question, setQuestion] = React.useState(flashcard.question);
+  const [answer, setAnswer] = React.useState(flashcard.answer);
+  const [id, setId] = React.useState(flashcard.id);
   //   const { flashcard } = flashcard;
 
+  useEffect(() => {
+    setQuestion(flashcard.question);
+    setAnswer(flashcard.answer);
+    setId(flashcard.id);
+  }, [flashcard]);
+
   // debugger;
-  //   const handleChange = (event) => {
-  //     setFlashcard(event.target.value);
-  //   };
+  const handleQuestionChange = (event) => {
+    setQuestion(event.target.value);
+
+    let timeoutId;
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      console.log("DISPATCH UPDATE QUETION", id, question);
+      props.dispatchUpdateFlashcard({
+        question: question,
+        id: id,
+        answer: answer
+      });
+    }, 2000);
+  };
+
+  const handleAnswerChange = (event) => {
+    setAnswer(event.target.value);
+
+    let timeoutId;
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      console.log("DISPATCH UPDATE ANSWER", id, answer);
+      props.dispatchUpdateFlashcard({
+        question: question,
+        id: id,
+        answer: answer
+      });
+    }, 2000);
+  };
 
   const onDeleteClick = () => {
     console.log(flashcard);
@@ -81,8 +116,8 @@ function Flashcard(props) {
               label='Question'
               multiline
               rowsMax={4}
-              value={flashcard.question}
-              //   onChange={handleChange}
+              value={question}
+              onChange={handleQuestionChange}
             />
 
             <TextField
@@ -90,8 +125,8 @@ function Flashcard(props) {
               label='Answer'
               multiline
               rowsMax={4}
-              value={flashcard.answer}
-              //   onChange={handleChange}
+              value={answer}
+              onChange={handleAnswerChange}
             />
           </div>
         </form>
@@ -103,7 +138,10 @@ function Flashcard(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatchDeleteFlashcard: (flashcardId) =>
-      dispatch(deleteFlashcard(flashcardId))
+      dispatch(deleteFlashcard(flashcardId)),
+    dispatchUpdateFlashcard: (data, flashcardId) => {
+      dispatch(updateFlashcard(data, flashcardId));
+    }
   };
 };
 

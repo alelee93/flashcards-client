@@ -34,7 +34,16 @@ class FlashcardShowContainer extends Component {
   };
 
   render() {
-    console.log("Addflashcard State is: ", this.props.addingFlashcard);
+    console.log(
+      "FlashcardSet rendering is props.selectedFlaschardSet: ",
+      this.props.selectedFlashcardSet.id
+    );
+
+    console.log(
+      "Flashcards rendering (props.flashcards): ",
+      this.props.flashcards
+    );
+
     const { classes } = this.props;
     if (this.props.flashcards && this.props.selectedFlashcardSet) {
       return (
@@ -91,7 +100,7 @@ class FlashcardShowContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    flashcards: state.flashcards.inSelectedflashcardSet,
+    flashcards: state.flashcards.inSelectedFlashcardSet,
     selectedFlashcardSet: state.flashcardSets.selectedFlashcardSet,
     addingFlashcard: state.flashcards.addingFlashcard
   };
