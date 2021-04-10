@@ -79,7 +79,7 @@ export const deleteFlashcardSet = () => {
     } else {
       newSelectedFlashcardSet = list[currflashcardSetIndex - 1];
     }
-    debugger;
+    //debugger;
     return fetch(`http://localhost:3001/flashcard_sets/${flashcardSet.id}`, {
       method: "DELETE"
       // headers: {
@@ -95,7 +95,7 @@ export const deleteFlashcardSet = () => {
         }
       })
       .then((flashcardSetJson) => {
-        debugger;
+        //debugger;
         dispatch({
           type: DELETE_FLASHCARDSET,
           payload: flashcardSetJson
@@ -104,7 +104,7 @@ export const deleteFlashcardSet = () => {
           type: SELECT_FLASHCARDSET_BY_ID,
           payload: newSelectedFlashcardSet
         });
-        debugger;
+        //debugger;
         return newSelectedFlashcardSet;
       })
       .catch((error) => alert(error));

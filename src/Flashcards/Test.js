@@ -9,7 +9,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 //import Grid from "@material-ui/core/Grid";
 import { Divider } from "@material-ui/core";
 import { connect } from "react-redux";
-import { addingFlashcard, createFlashcard } from "./actions/flashcards";
+import { addingFlashcard, createFlashcard } from "../actions/flashcards";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Test(props) {
-  //debugger;
   const classes = useStyles();
   const [question, setQuestion] = React.useState("");
   const [answer, setAnswer] = React.useState("");

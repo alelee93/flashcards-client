@@ -10,7 +10,7 @@ import { withStyles } from "@material-ui/core/styles";
 import ContentEditable from "react-contenteditable";
 import newFormStyles from "./newFormStyles";
 import TextField from "@material-ui/core/TextField";
-import Test from "../Test";
+//import Test from "../Flashcards/Test";
 
 class FlashcardSetFormcontainer extends Component {
   state = {

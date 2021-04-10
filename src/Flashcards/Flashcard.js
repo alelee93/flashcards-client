@@ -30,13 +30,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Flashcard(props) {
+  // debugger;
   const { flashcard, dispatchDeleteFlashcard } = props;
   const classes = useStyles();
 
   const [question, setQuestion] = React.useState(flashcard.question);
   const [answer, setAnswer] = React.useState(flashcard.answer);
   const [id, setId] = React.useState(flashcard.id);
-  //   const { flashcard } = flashcard;
+
+  useEffect(() => {
+    const updateQuestion = () =>
+      props.dispatchUpdateFlashcard({
+        question: question,
+        id: id,
+        answer: answer
+      });
+
+    ///PREVENT IF ID CHANGED
+    //IF FLASHCARD.ID == ID
+
+    if (flashcard.question !== question || flashcard.answer !== answer) {
+      console.log(`same id, ${id}`);
+      const timeoutId = setTimeout(() => {
+        updateQuestion();
+      }, 2000);
+      console.log("timeoutid", timeoutId);
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [question, answer]);
 
   useEffect(() => {
     setQuestion(flashcard.question);
@@ -45,37 +68,6 @@ function Flashcard(props) {
   }, [flashcard]);
 
   // debugger;
-  const handleQuestionChange = (event) => {
-    setQuestion(event.target.value);
-
-    let timeoutId;
-    clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(() => {
-      console.log("DISPATCH UPDATE QUETION", id, question);
-      props.dispatchUpdateFlashcard({
-        question: question,
-        id: id,
-        answer: answer
-      });
-    }, 2000);
-  };
-
-  const handleAnswerChange = (event) => {
-    setAnswer(event.target.value);
-
-    let timeoutId;
-    clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(() => {
-      console.log("DISPATCH UPDATE ANSWER", id, answer);
-      props.dispatchUpdateFlashcard({
-        question: question,
-        id: id,
-        answer: answer
-      });
-    }, 2000);
-  };
 
   const onDeleteClick = () => {
     console.log(flashcard);
@@ -117,7 +109,7 @@ function Flashcard(props) {
               multiline
               rowsMax={4}
               value={question}
-              onChange={handleQuestionChange}
+              onChange={(e) => setQuestion(e.target.value)}
             />
 
             <TextField
@@ -126,7 +118,7 @@ function Flashcard(props) {
               multiline
               rowsMax={4}
               value={answer}
-              onChange={handleAnswerChange}
+              onChange={(e) => setAnswer(e.target.value)}
             />
           </div>
         </form>

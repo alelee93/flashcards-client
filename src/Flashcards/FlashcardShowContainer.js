@@ -10,7 +10,9 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 
-import Test from "../Test";
+import FlashcardTest from "../FlashcardQuiz/FlashcardTest";
+
+import Test from "./Test";
 import Flashcard from "./Flashcard";
 
 class FlashcardShowContainer extends Component {
@@ -28,21 +30,21 @@ class FlashcardShowContainer extends Component {
       );
     }
   };
-
   handleOnClick = () => {
+    // debugger;
     this.props.dispatchAddingFlashcard(true);
   };
 
   render() {
-    console.log(
-      "FlashcardSet rendering is props.selectedFlaschardSet: ",
-      this.props.selectedFlashcardSet.id
-    );
+    // console.log(
+    //   "FlashcardSet rendering is props.selectedFlaschardSet: ",
+    //   this.props.selectedFlashcardSet.id
+    // );
 
-    console.log(
-      "Flashcards rendering (props.flashcards): ",
-      this.props.flashcards
-    );
+    // console.log(
+    //   "Flashcards rendering (props.flashcards): ",
+    //   this.props.flashcards
+    // );
 
     const { classes } = this.props;
     if (this.props.flashcards && this.props.selectedFlashcardSet) {
@@ -71,6 +73,8 @@ class FlashcardShowContainer extends Component {
           </Button>
 
           {this.props.addingFlashcard ? <Test /> : ""}
+
+          <FlashcardTest />
 
           <div>
             {this.props.flashcards.map((flashcard) => {

@@ -22,6 +22,8 @@ import {
 
 import DeleteBttn from "./deleteFlashcardSet";
 import AddFlashcardSetBttn from "./addFlashcardSet";
+import Crop169Icon from "@material-ui/icons/Crop169";
+import ListIcon from "@material-ui/icons/List";
 
 class TopBarContainer extends React.Component {
   constructor() {
@@ -54,6 +56,8 @@ class TopBarContainer extends React.Component {
           </IconButton> */}
             <DeleteBttn />
             <AddFlashcardSetBttn />
+            <Crop169Icon onClick={() => console.log("view flashcards")} />
+            <ListIcon />
             {/* <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -66,7 +70,8 @@ class TopBarContainer extends React.Component {
                 }}
               />
             </div> */}
-            <p>
+
+            {/* <p>
               selectedFlashcardSet:{" "}
               {this.props.selectedFlashcardSet
                 ? this.props.selectedFlashcardSet.id
@@ -76,7 +81,7 @@ class TopBarContainer extends React.Component {
             <p>
               newFlaschardSet:
               {this.props.addingFlashcardSet ? "true" : "false"}
-            </p>
+            </p> */}
           </Toolbar>
         </AppBar>
       </div>

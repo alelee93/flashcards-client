@@ -12,7 +12,7 @@ function DeleteBttn(props) {
 
   const handleclick = () => {
     props.deleteFlashcardSet().then((newSelectedFlashcardSet) => {
-      debugger;
+      // debugger;
       history.push(`/flashcardsets/${newSelectedFlashcardSet.id}`);
     });
     //debugger;

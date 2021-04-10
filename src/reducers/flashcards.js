@@ -27,7 +27,7 @@ export default function FlashcardsReducer(state = initialState, action) {
         }
       };
     case SUCCESSFULLY_LOADED_FLASHCARDS:
-      //debugger;
+      // debugger;
       return {
         flashcardSetsLoaded: {
           ...state.flashcardSetsLoaded,
@@ -41,13 +41,14 @@ export default function FlashcardsReducer(state = initialState, action) {
       };
 
     case ADDING_FLASHCARD:
+      //debugger;
       return {
         ...state,
         addingFlashcard: action.payload
       };
 
     case SUCCESSFULLY_CREATED_FLASHCARD:
-      debugger;
+      //debugger;
       return {
         ...state,
         inSelectedFlashcardSet: state.inSelectedFlashcardSet.concat(
@@ -67,9 +68,18 @@ export default function FlashcardsReducer(state = initialState, action) {
     case SUCCESSFULLY_UPDATED_FLASHCARD:
       return {
         ...state,
-        inSelectedFlashcardSet: state.inSelectedFlashcardSet
-          .filter((flashcard) => flashcard.id !== action.payload.id)
-          .concat(action.payload)
+        // inSelectedFlashcardSet: state.inSelectedFlashcardSet
+        //   .filter((flashcard) => flashcard.id !== action.payload.id)
+        //   .concat(action.payload),
+
+        inSelectedFlashcardSet: state.inSelectedFlashcardSet.map(
+          (flashcard) => {
+            if (flashcard.id == action.payload.id) {
+              return action.payload;
+            }
+            return flashcard;
+          }
+        )
       };
 
     default:

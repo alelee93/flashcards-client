@@ -11,8 +11,9 @@ import FlashcardSetFormContainer from "./FlashcardSets/FlashcardSetFormContainer
 import NewFlashcardContainer from "./Flashcards/NewFlashcardContainer";
 import FlashcardShowContainer from "./Flashcards/FlashcardShowContainer";
 import TopBarContainer from "./TopBar/TopBarContainer";
-import Test from "./Test";
+import Test from "./Flashcards/Test";
 import EditableTextField from "./EditableTextField";
+//import Flashcard from "./FlashcardQuiz/FlashcardTest";
 
 class App extends React.Component {
   constructor() {
@@ -54,6 +55,8 @@ class App extends React.Component {
           <Switch>
             {/* <Route exact path="/"> <FlashcardSetsIndexContainer /> </Route> */}
             <Route exact path='/test' component={Test} />
+            {/* <Route exact path='/testquiz' component={Flashcard} /> */}
+
             <Route
               exact
               path='/editableTestField'
