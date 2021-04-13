@@ -4,7 +4,8 @@ import {
   ADDING_FLASHCARD,
   SUCCESSFULLY_CREATED_FLASHCARD,
   DELETE_FLASHCARD,
-  SUCCESSFULLY_UPDATED_FLASHCARD
+  SUCCESSFULLY_UPDATED_FLASHCARD,
+  UPDATE_FLASHCARD_QUIZ
 } from ".";
 
 export const fetchFlashcards = (flashcardId) => {
@@ -84,6 +85,13 @@ export const deleteFlashcard = (flashcard) => {
         });
       })
       .catch((error) => alert(error));
+  };
+};
+
+export const updateFlashcardQuiz = (state) => {
+  return {
+    type: UPDATE_FLASHCARD_QUIZ,
+    payload: state
   };
 };
 

@@ -4,7 +4,8 @@ import {
   ADDING_FLASHCARD,
   SUCCESSFULLY_CREATED_FLASHCARD,
   DELETE_FLASHCARD,
-  SUCCESSFULLY_UPDATED_FLASHCARD
+  SUCCESSFULLY_UPDATED_FLASHCARD,
+  UPDATE_FLASHCARD_QUIZ
 
   // FAILED_LOADING_FLASHCARDSETS,
   // ADD_FLASHCARDS,
@@ -13,7 +14,8 @@ import {
 const initialState = {
   inSelectedFlashcardSet: [],
   flashcardSetsLoaded: {},
-  addingFlashcard: false
+  addingFlashcard: false,
+  flashcardsQuiz: false
 };
 
 export default function FlashcardsReducer(state = initialState, action) {
@@ -45,6 +47,12 @@ export default function FlashcardsReducer(state = initialState, action) {
       return {
         ...state,
         addingFlashcard: action.payload
+      };
+
+    case UPDATE_FLASHCARD_QUIZ:
+      return {
+        ...state,
+        flashcardsQuiz: action.payload
       };
 
     case SUCCESSFULLY_CREATED_FLASHCARD:

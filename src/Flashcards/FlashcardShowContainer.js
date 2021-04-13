@@ -47,7 +47,11 @@ class FlashcardShowContainer extends Component {
     // );
 
     const { classes } = this.props;
-    if (this.props.flashcards && this.props.selectedFlashcardSet) {
+    if (
+      this.props.flashcards &&
+      this.props.selectedFlashcardSet &&
+      !this.props.flashcardsQuiz
+    ) {
       return (
         <section className={classes.editorContainer}>
           {/* <h1 className='text-3xl font-bold text-center'>
@@ -74,8 +78,6 @@ class FlashcardShowContainer extends Component {
 
           {this.props.addingFlashcard ? <Test /> : ""}
 
-          <FlashcardTest />
-
           <div>
             {this.props.flashcards.map((flashcard) => {
               //debugger;
@@ -98,6 +100,12 @@ class FlashcardShowContainer extends Component {
           </div> */}
         </section>
       );
+    } else if (
+      this.props.flashcards &&
+      this.props.selectedFlashcardSet &&
+      this.props.flashcardsQuiz
+    ) {
+      return <FlashcardTest />;
     } else return <div></div>;
   }
 }
@@ -106,7 +114,8 @@ const mapStateToProps = (state) => {
   return {
     flashcards: state.flashcards.inSelectedFlashcardSet,
     selectedFlashcardSet: state.flashcardSets.selectedFlashcardSet,
-    addingFlashcard: state.flashcards.addingFlashcard
+    addingFlashcard: state.flashcards.addingFlashcard,
+    flashcardsQuiz: state.flashcards.flashcardsQuiz
   };
 };
 

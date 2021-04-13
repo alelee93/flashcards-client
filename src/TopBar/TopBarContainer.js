@@ -20,6 +20,8 @@ import {
   setStateForAddingFlashcardSet
 } from "../actions/flashcardSets";
 
+import { updateFlashcardQuiz } from "../actions/flashcards";
+
 import DeleteBttn from "./deleteFlashcardSet";
 import AddFlashcardSetBttn from "./addFlashcardSet";
 import Crop169Icon from "@material-ui/icons/Crop169";
@@ -56,8 +58,12 @@ class TopBarContainer extends React.Component {
           </IconButton> */}
             <DeleteBttn />
             <AddFlashcardSetBttn />
-            <Crop169Icon onClick={() => console.log("view flashcards")} />
-            <ListIcon />
+            <Crop169Icon
+              onClick={() => this.props.dispatchUpdateFlashcardQuiz(true)}
+            />
+            <ListIcon
+              onClick={() => this.props.dispatchUpdateFlashcardQuiz(false)}
+            />
             {/* <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -70,8 +76,7 @@ class TopBarContainer extends React.Component {
                 }}
               />
             </div> */}
-
-            {/* <p>
+            <p>
               selectedFlashcardSet:{" "}
               {this.props.selectedFlashcardSet
                 ? this.props.selectedFlashcardSet.id
@@ -81,7 +86,7 @@ class TopBarContainer extends React.Component {
             <p>
               newFlaschardSet:
               {this.props.addingFlashcardSet ? "true" : "false"}
-            </p> */}
+            </p>
           </Toolbar>
         </AppBar>
       </div>
@@ -102,6 +107,8 @@ const mapDispatchToProps = (dispatch) => {
     selectFlashcardSet: (flashcardSet) => {
       dispatch(selectFlashcardSet(flashcardSet));
     },
+    dispatchUpdateFlashcardQuiz: (state) =>
+      dispatch(updateFlashcardQuiz(state)),
     deleteFlashcardSet: (flashcardSetId) => {
       dispatch(deleteFlashcardSet(flashcardSetId));
     },
