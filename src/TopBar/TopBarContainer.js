@@ -76,7 +76,7 @@ class TopBarContainer extends React.Component {
                 }}
               />
             </div> */}
-            <p>
+            {/* <p>
               selectedFlashcardSet:{" "}
               {this.props.selectedFlashcardSet
                 ? this.props.selectedFlashcardSet.id
@@ -86,7 +86,7 @@ class TopBarContainer extends React.Component {
             <p>
               newFlaschardSet:
               {this.props.addingFlashcardSet ? "true" : "false"}
-            </p>
+            </p> */}
           </Toolbar>
         </AppBar>
       </div>

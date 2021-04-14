@@ -46,6 +46,8 @@ class FlashcardShowContainer extends Component {
     //   this.props.flashcards
     // );
 
+    console.log(this.props.flashcards);
+
     const { classes } = this.props;
     if (
       this.props.flashcards &&
@@ -105,7 +107,7 @@ class FlashcardShowContainer extends Component {
       this.props.selectedFlashcardSet &&
       this.props.flashcardsQuiz
     ) {
-      return <FlashcardTest />;
+      return <FlashcardTest flashcards={this.props.flashcards} />;
     } else return <div></div>;
   }
 }
