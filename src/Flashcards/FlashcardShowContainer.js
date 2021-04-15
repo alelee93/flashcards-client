@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchFlashcards, addingFlashcard } from "../actions/flashcards";
-import { selectFlashcardSetbyId } from "../actions/flashcardSets";
+import {
+  selectFlashcardSetbyId,
+  updateFlashcardSet,
+  updateFlashcardSetName
+} from "../actions/flashcardSets";
 import { compose } from "redux";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -16,6 +20,8 @@ import Test from "./Test";
 import Flashcard from "./Flashcard";
 
 class FlashcardShowContainer extends Component {
+  state = { title: this.props.selectedFlashcardSet.title };
+
   componentDidMount() {
     const flashcardSetId = this.props.match.params.flashcardsetId;
     this.props.dispatchSelectFlashcardSetbyId(flashcardSetId);
@@ -26,29 +32,41 @@ class FlashcardShowContainer extends Component {
     //debugger;
     if (this.props.selectedFlashcardSet !== prevProps.selectedFlashcardSet) {
       this.props.dispatchFetchFlashcards(
-        this.props.match.params.flashcardsetId
+        //this.props.match.params.flashcardsetId
+        this.props.selectedFlashcardSet.id
       );
+      this.setState({ title: this.props.selectedFlashcardSet.title });
     }
   };
   handleOnClick = () => {
-    // debugger;
     this.props.dispatchAddingFlashcard(true);
   };
 
+  handleUpdateTitle = (e) => {
+    this.setState({
+      title: e.target.value
+    });
+
+    const updatedTitle = { title: e.target.value };
+    const flashcardSetId = this.props.selectedFlashcardSet.id;
+
+    this.props.dispatchUpdateFlashcardSetName(e.target.value, flashcardSetId);
+    clearTimeout(this.timeoutId);
+
+    this.timeoutId = setTimeout(() => {
+      this.props.dispatchUpdateFlashcardSet(updatedTitle, flashcardSetId);
+    }, 3000);
+  };
+
   render() {
-    // console.log(
-    //   "FlashcardSet rendering is props.selectedFlaschardSet: ",
-    //   this.props.selectedFlashcardSet.id
-    // );
-
-    // console.log(
-    //   "Flashcards rendering (props.flashcards): ",
-    //   this.props.flashcards
-    // );
-
     console.log(this.props.flashcards);
+    console.log(this.state.title);
+    console.log(this.props.selectedFlashcardSet.title);
 
     const { classes } = this.props;
+
+    //debugger;
+
     if (
       this.props.flashcards &&
       this.props.selectedFlashcardSet &&
@@ -64,7 +82,8 @@ class FlashcardShowContainer extends Component {
             id='standard-basic'
             label='title'
             // disbled={true}
-            value={this.props.selectedFlashcardSet.title}
+            value={this.state.title}
+            onChange={this.handleUpdateTitle}
           ></TextField>
 
           <Button
@@ -86,20 +105,6 @@ class FlashcardShowContainer extends Component {
               return <Flashcard flashcard={flashcard} />;
             })}
           </div>
-
-          {/* <div className='grid grid-cols-3'>
-            {this.props.flashcards.map((flashcard) => (
-              <figure>
-                <img
-                  className=''
-                  alt={flashcard.card_number}
-                  src={flashcard.poster_url}
-                />
-                <p>{flashcard.question}</p>
-                <p>{flashcard.answer}</p>
-              </figure>
-            ))}
-          </div> */}
         </section>
       );
     } else if (
@@ -129,11 +134,15 @@ const mapDispatchToProps = (dispatch) => {
     dispatchSelectFlashcardSetbyId: (flashcardId) =>
       dispatch(selectFlashcardSetbyId(flashcardId)),
 
-    dispatchAddingFlashcard: (state) => dispatch(addingFlashcard(state))
+    dispatchAddingFlashcard: (state) => dispatch(addingFlashcard(state)),
+
+    dispatchUpdateFlashcardSet: (data, id) =>
+      dispatch(updateFlashcardSet(data, id)),
+
+    dispatchUpdateFlashcardSetName: (newName, id) =>
+      dispatch(updateFlashcardSetName(newName, id))
   };
 };
-
-//export default withStyles(styles)(FlashcardShowContainer)
 
 export default compose(
   withStyles(styles),

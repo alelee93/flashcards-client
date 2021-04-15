@@ -1,14 +1,14 @@
 import {
   START_LOADING_FLASHCARDSETS,
   SUCCESSFULLY_LOADED_FLASHCARDSETS,
-  //FAILED_LOADING_FLASHCARDSETS,
-  //ADD_FLASHCARDSET,
   SELECT_FLASHCARDSET,
   SELECT_FLASHCARDSET_BY_ID,
   SUCCESSFULLY_CREATED_FLASHCARD_SET,
   DELETE_FLASHCARDSET,
   ADDING_FLASHCARDSET_STATE,
-  NEW_FLASHCARDSET_TITLE
+  NEW_FLASHCARDSET_TITLE,
+  SUCCESSFULLY_UPDATED_FLASHCARD_SET,
+  UPDATE_FLASHCARDSET_NAME
 } from "../actions";
 
 const initialState = {
@@ -30,7 +30,6 @@ export default function FlashcardSetsReducer(state = initialState, action) {
         loadingState: "successful"
       };
     case SELECT_FLASHCARDSET:
-      //debugger;
       return {
         ...state,
         selectedFlashcardSet: action.flashcardSet
@@ -50,7 +49,6 @@ export default function FlashcardSetsReducer(state = initialState, action) {
         newFlashcardSetTitle: "New Title"
       };
     case DELETE_FLASHCARDSET:
-      //debugger
       return {
         ...state,
         list: state.list.filter(
@@ -63,10 +61,32 @@ export default function FlashcardSetsReducer(state = initialState, action) {
         addingFlashcardSet: action.payload
       };
     case NEW_FLASHCARDSET_TITLE:
-      //debugger;
       return {
         ...state,
         newFlashcardSetTitle: action.payload
+      };
+
+    case UPDATE_FLASHCARDSET_NAME:
+      return {
+        ...state,
+        list: state.list.map((flashcardSet) => {
+          if (flashcardSet.id == action.payload.id) {
+            return { ...flashcardSet, title: action.payload.newName };
+          }
+          return flashcardSet;
+        })
+      };
+
+    case SUCCESSFULLY_UPDATED_FLASHCARD_SET:
+      return {
+        ...state,
+        selectedFlashcardSet: action.payload,
+        list: state.list.map((flashcardSet) => {
+          if (flashcardSet.id == action.payload.id) {
+            return action.payload;
+          }
+          return flashcardSet;
+        })
       };
 
     default:

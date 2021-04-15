@@ -7,7 +7,9 @@ import {
   SUCCESSFULLY_CREATED_FLASHCARD_SET,
   DELETE_FLASHCARDSET,
   ADDING_FLASHCARDSET_STATE,
-  NEW_FLASHCARDSET_TITLE
+  NEW_FLASHCARDSET_TITLE,
+  SUCCESSFULLY_UPDATED_FLASHCARD_SET,
+  UPDATE_FLASHCARDSET_NAME
 } from ".";
 
 export const fetchFlashcardSets = () => {
@@ -120,6 +122,13 @@ export const selectFlashcardSet = (flashcardSet) => {
   };
 };
 
+export const updateFlashcardSetName = (newName, id) => {
+  return {
+    type: UPDATE_FLASHCARDSET_NAME,
+    payload: { newName, id }
+  };
+};
+
 //NEED TO LOOK INTO THIS ONE
 export const selectFlashcardSetbyId = (flashcardSetId) => {
   return (dispatch) => {
@@ -153,5 +162,33 @@ export const newFlashardSetTitle = (title) => {
   return {
     type: NEW_FLASHCARDSET_TITLE,
     payload: title
+  };
+};
+
+export const updateFlashcardSet = (data, id) => {
+  //debugger;
+  return (dispatch) => {
+    return fetch(`http://localhost:3001/flashcard_sets/${id}`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ flashcard_set: data })
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return res.json().then((errors) => Promise.reject(errors));
+        }
+      })
+      .then((flashcardSet) => {
+        // debugger;
+        dispatch({
+          type: SUCCESSFULLY_UPDATED_FLASHCARD_SET,
+          payload: flashcardSet
+        });
+      });
   };
 };

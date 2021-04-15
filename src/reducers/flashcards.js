@@ -6,9 +6,6 @@ import {
   DELETE_FLASHCARD,
   SUCCESSFULLY_UPDATED_FLASHCARD,
   UPDATE_FLASHCARD_QUIZ
-
-  // FAILED_LOADING_FLASHCARDSETS,
-  // ADD_FLASHCARDS,
 } from "../actions";
 
 const initialState = {
@@ -35,9 +32,6 @@ export default function FlashcardsReducer(state = initialState, action) {
           ...state.flashcardSetsLoaded,
           [action.payload]: "successful"
         },
-        // inSelectedFlashcardSet: state.inSelectedFlashcardSet
-        // .filter((flashcard) => flashcard.flashcard_set_id == action.payload.flashcard_set.id)
-        // .concat(action.payload.flashcards)
         inSelectedFlashcardSet: action.payload.flashcards,
         addingFlashcard: false
       };
@@ -76,10 +70,6 @@ export default function FlashcardsReducer(state = initialState, action) {
     case SUCCESSFULLY_UPDATED_FLASHCARD:
       return {
         ...state,
-        // inSelectedFlashcardSet: state.inSelectedFlashcardSet
-        //   .filter((flashcard) => flashcard.id !== action.payload.id)
-        //   .concat(action.payload),
-
         inSelectedFlashcardSet: state.inSelectedFlashcardSet.map(
           (flashcard) => {
             if (flashcard.id == action.payload.id) {
